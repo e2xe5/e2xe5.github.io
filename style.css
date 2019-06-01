@@ -5,6 +5,7 @@ body {
   align-items: center;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
+  background-color: #F0F0F0;
 }
 
 h2 {
@@ -55,8 +56,9 @@ p {
   text-align: center;
   align-items: center;
   z-index: 2;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0;
   width: 100%;
 }
 
@@ -66,12 +68,26 @@ p {
   align-items: center;
   width: 90%;
   padding: 5%;
-  padding-top: 10px;
+  padding-top: 4vh;
+  padding-bottom: 4vh;
+  background-color: #FFF;
 }
 
 .text {
   position: relative;
   align-items: center;
+}
+
+.text1 {
+  text-align: center;
+  align-items: center;
+  width: 90%;
+  margin-top: 0;
+  padding: 5%;
+  border-top-style: dashed;
+  border-top-width: 1px;
+  border-top-color: #CCC;
+  padding-top: 10px;
 }
 
 @media (min-width: 1281px) {

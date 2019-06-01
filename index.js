@@ -1,9 +1,8 @@
 let img;
-let frame=0;
+let frame;
 let s;
 let k;
 let a = [];
-let hights = [];
 let type = 2;
 let done;
 let SIMPVAL;
@@ -13,60 +12,65 @@ let n = 200;
 let eps;
 let depth = 10;
 let np;
-let lmax = 0;
-let lmax1 = -800;
-let perc = 0;
-let step = 0;
-let timestart;
-let linesD = 0;
-let fc1;
-let delay;
-let globT;
+let lmax;
+let lmax1;
+let step;
 let pix = [];
-let p1 = [];
-let p2 = [];
-let hi = [];
-let canv
+let canv;
+
+function start(a) {
+  console.log(a);
+  step = 0;
+  frame = 0;
+  lmax1 = -800;
+  lmax = 0;
+  done = false;
+}
 
 function preload() {
-  img = loadImage("/"+int(random(4))+'.gif');
+  img = loadImage("/" + int(random(4)) + '.gif');
   img.resize(width, height);
 }
 
 function setup() {
-  createCanvas(min(windowWidth,windowHeight)-20, min(windowWidth,windowHeight)-20);
-  canv = createCanvas(min(windowWidth,windowHeight)-20, min(windowWidth,windowHeight)-20);
+  createCanvas(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
+  canv = createCanvas(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
   canv.parent('logo');
-  img.resize(min(windowWidth,windowHeight)-20, min(windowWidth,windowHeight)-20);
+  img.resize(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
   smooth(8);
+  step = 0;
+  frame = 0;
+  lmax1 = -800;
+  lmax = 0;
+  done = false;
 }
 
 function draw() {
-  if (frame<1) {
-      image(img, 0, 0);
+  if (frame < 1) {
+    image(img, 0, 0);
   }
   strokeWeight(0.7);
   fill(0, 128);
   stroke(0, 128);
-  let i=0;
-  if (frame==0) {
+  let i = 0;
+  if (frame == 0) {
     loadPixels();
     const d = pixelDensity();
-    let s=0.0;
+    s = 0.0;
     pix = [];
     for (let x = 0; x < img.width; x++) {
       for (let y = 0; y < img.height; y++) {
         const i = 4 * d * (y * d * img.width + x);
-        pix[y*img.width+x]=255-red(get(x, y));
-        if (pix[y*img.width+x] < 1) {
-          pix[y*img.width+x] = 0;
+        pix[y * img.width + x] = 255 - red(get(x, y));
+        if (pix[y * img.width + x] < 1) {
+          pix[y * img.width + x] = 0;
         }
-        s += 1.0 * pix[y*img.width+x] / (img.width*img.height);
+        s += 1.0 * pix[y * img.width + x] / (img.width * img.height);
       }
     }
-    SIMPVAL=int(s*0.4);
-    NEGVAL=int(3*s*0.4);4
-    eps=2*s;
+    SIMPVAL = int(s * 0.4);
+    NEGVAL = int(3 * s * 0.4);
+    eps = 2 * s;
     if (type == 1) {
       let k = 0;
       for (let i = 0; i < n / 4; i++) {
@@ -83,26 +87,22 @@ function draw() {
     }
     if (type == 2) {
       for (let i = 0; i < n; i++) {
-        hights[i] = -100;
         a[i] = round(img.height / 2 + (sin(TWO_PI * i / n) * (img.height / 2 - 1)));
         a[i + n] = round(img.height / 2 - (cos(TWO_PI * i / n) * (img.height / 2 - 1)));
       }
     }
     done = false;
     updatePixels();
-      background(255);
-      for (let i = 0; i < n; i++) {
-        hights[i] = 0;
-        canv.ellipse(a[i], a[i + n], 2, 2);
-      }
-      np=n/2;
+    background(240);
+    for (let i = 0; i < n; i++) {
+      canv.ellipse(a[i], a[i + n], 2, 2);
+    }
+    np = int(random(n));
   }
   if (!done) {
     draw2d();
-  } else {
-    noLoop();
   }
-  frame++;
+    frame++;
 }
 
 function draw2d() {
@@ -114,7 +114,8 @@ function go(k) {
     let f = false;
     let j = 0;
     let max = -16000;
-    for (let j1 = 0; (j1 < ((2 * n) + 1)) && !f; j1++) {
+    for (let j1 = 0;
+      (j1 < ((2 * n) + 1)) && !f; j1++) {
       if (i != j1) {
         let q = (j1 % 2 === 0) ? (n + 1 + np + (j1 / 2)) % n : (n + 1 + np - ((j1 + 1) / 2)) % n;
         let c = p(i, q, 0);
@@ -158,10 +159,10 @@ function p(x, y, m) {
     let sy = a[x + n] < a[y + n] ? 1 : -1;
     let err = dx - dy;
     let e2;
-    let f=false;
-    while (f!=true) {
+    let f = false;
+    while (f != true) {
       if (x0 === a[y] && y0 === a[y + n]) {
-        f=true;
+        f = true;
       }
       if (m != 1) {
         s += pix[x0 + y0 * img.height];
