@@ -1,4 +1,5 @@
 let img;
+let img1;
 let frame;
 let s;
 let k;
@@ -17,35 +18,45 @@ let lmax1;
 let step;
 let pix = [];
 let canv;
+let loaded = -1;
+
+function handleFile(file) {
+  print(file);
+  if (file.type === 'image') {
+    img1 = loadImage(file.data);
+    console.log(img1);
+    loaded = 10;
+  } else {
+    img = null;
+  }
+}
 
 function start(a) {
-  console.log(n / 4);
   step = 0;
   frame = 0;
   lmax1 = -800;
   lmax = 0;
   done = false;
+  loaded = -1;
   type = round(random(1));
   createnails();
-}
-
-function preload() {
-  img = loadImage("/" + int(random(4)) + '.gif');
 }
 
 function setup() {
-  createCanvas(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
-  canv = createCanvas(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
-  img.resize(min(windowWidth, windowHeight) - 20, min(windowWidth, windowHeight) - 20);
+  createCanvas(min(windowWidth, windowHeight) - 60, min(windowWidth, windowHeight) - 60);
+  canv = createCanvas(min(windowWidth, windowHeight) - 60, min(windowWidth, windowHeight) - 60);
+  img = createImage(min(windowWidth, windowHeight) - 60, min(windowWidth, windowHeight) - 60);
   canv.parent('logo');
+  input = createFileInput(handleFile);
+  input.class('inputImg');
+  input.parent('btnh');
   smooth(8);
   step = 0;
-  frame = 0;
+  frame = 4000;
   lmax1 = -800;
   lmax = 0;
-  done = false;
+  done = true;
   type = round(random(1));
-  createnails();
 }
 
 function createnails() {
@@ -71,8 +82,13 @@ function createnails() {
 }
 
 function draw() {
+  if (loaded>0) {
+    loaded--;
+  } else if (loaded==0) {
+      start();
+  }
   if (frame < 1) {
-    image(img, 0, 0);
+    image(img1, 0,0, img.width, img.height);
   }
   strokeWeight(0.7);
   fill(0, 128);

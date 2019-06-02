@@ -46,6 +46,7 @@ p {
   justify-content: center;
   align-items: center;
   padding: 10px;
+  z-index: -1;
 }
 
 .maintext_back {
@@ -71,6 +72,7 @@ p {
   padding-top: 4vh;
   padding-bottom: 4vh;
   background-color: #FFF;
+  z-index: -1;
 }
 
 .text {
@@ -82,17 +84,42 @@ p {
   text-align: center;
   align-items: center;
   width: 90%;
-  margin-top: 0;
-  padding: 5%;
+  margin: 0px;
+  padding: 20px;
   border-top-style: dashed;
   border-top-width: 1px;
   border-top-color: #CCC;
-  padding-top: 10px;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+    width: 100%;
+}
+
+.btn {
+  width: 100%;
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
 
 @media (min-width: 1281px) {
   h2 {
-    font-size: 360%;
+    font-size: 380%;
   }
 
   h3 {
@@ -106,7 +133,7 @@ p {
 
 @media (min-width: 1025px) and (max-width: 1280px) {
   h2 {
-    font-size: 320%;
+    font-size: 340%;
   }
 
   h3 {
@@ -120,7 +147,7 @@ p {
 
 @media (min-width: 768px) and (max-width: 1024px) {
   h2 {
-    font-size: 280%;
+    font-size: 290%;
   }
 
   h3 {
