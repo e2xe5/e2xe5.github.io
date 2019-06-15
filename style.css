@@ -45,7 +45,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  /* padding: 5%;   */
   z-index: -1;
 }
 
@@ -95,16 +95,16 @@ p {
   position: relative;
   overflow: hidden;
   display: inline-block;
-    width: 100%;
+  width: 100%;
 }
 
 .btn {
-  width: 100%;
-  border: 2px solid gray;
-  color: gray;
+  min-width: 100%;
+  /* border: 2px solid gray; */
+  /* color: gray; */
   background-color: white;
   padding: 8px 20px;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   font-size: 20px;
   font-weight: bold;
 }

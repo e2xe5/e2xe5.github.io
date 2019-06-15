@@ -1,7 +1,6 @@
 let img;
-let frame;
+let i;
 let s;
-let k;
 let a = [];
 let type = 1;
 let done;
@@ -77,7 +76,6 @@ function draw() {
   strokeWeight(0.7);
   fill(0, 128);
   stroke(0, 128);
-  let i = 0;
   if (frame == 0) {
     loadPixels();
     const d = pixelDensity();
@@ -85,7 +83,6 @@ function draw() {
     pix = [];
     for (let x = 0; x < img.width; x++) {
       for (let y = 0; y < img.height; y++) {
-        const i = 4 * d * (y * d * img.width + x);
         pix[y * img.width + x] = 255 - red(get(x, y));
         if (pix[y * img.width + x] < 1) {
           pix[y * img.width + x] = 0;
