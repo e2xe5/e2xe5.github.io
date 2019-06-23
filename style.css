@@ -115,6 +115,11 @@ p {
 }
 
 .upload-btn-wrapper input[type="file"] {
+  border-style: none;
+  overflow: hidden;
+  outline: none;
+  background-color: Transparent;
+  background-repeat: no-repeat;
   font-size: 100px;
   position: absolute;
   left: 0;
