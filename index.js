@@ -1,8 +1,6 @@
 let img;
-let i;
 let s;
 let a = [];
-let type = 1;
 let done;
 let SIMPVAL;
 let NEGVAL;
@@ -24,7 +22,6 @@ function start(a) {
   lmax1 = -800;
   lmax = 0;
   done = false;
-  type = round(random(1));
   createnails();
 }
 
@@ -43,29 +40,20 @@ function setup() {
   lmax1 = -800;
   lmax = 0;
   done = false;
-  type = round(random(1));
   createnails();
 }
 
 function createnails() {
-  if (type == 0) {
-    let k = 0;
-    for (let i = 0; i < (n / 4); i++) {
-      a[i] = round(i * (img.height - 1) * 4 / n);
-      a[i + n] = 0;
-      a[i + n / 4] = round(img.height - 1);
-      a[i + n / 4 + n] = round(i * (img.height - 1) * 4 / n);
-      a[i + n / 2] = round(img.height - i * (img.height - 1) * 4 / n - 1);
-      a[i + n / 2 + n] = round(img.height - 1);
-      a[i + 3 * n / 4] = 0;
-      a[i + 3 * n / 4 + n] = round(img.height - i * (img.height - 1) * 4 / n - 1);
-    }
-  }
-  if (type == 1) {
-    for (let i = 0; i < n; i++) {
-      a[i] = round(img.height / 2 + (sin(TWO_PI * i / n) * (img.height / 2 - 1)));
-      a[i + n] = round(img.height / 2 - (cos(TWO_PI * i / n) * (img.height / 2 - 1)));
-    }
+  let k = 0;
+  for (let i = 0; i < (n / 4); i++) {
+    a[i] = round(i * (img.height - 1) * 4 / n);
+    a[i + n] = 0;
+    a[i + n / 4] = round(img.height - 1);
+    a[i + n / 4 + n] = round(i * (img.height - 1) * 4 / n);
+    a[i + n / 2] = round(img.height - i * (img.height - 1) * 4 / n - 1);
+    a[i + n / 2 + n] = round(img.height - 1);
+    a[i + 3 * n / 4] = 0;
+    a[i + 3 * n / 4 + n] = round(img.height - i * (img.height - 1) * 4 / n - 1);
   }
 }
 

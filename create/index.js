@@ -1,7 +1,6 @@
 let img;
 let s;
 let a = [];
-let type = 1;
 let done;
 let SIMPVAL;
 let NEGVAL;
@@ -17,13 +16,12 @@ let pix = [];
 let canv;
 let loaded = -1;
 let croped = false;
-var canvwidth = 1440;
 let dx, dy;
 let dx1 = 0;
 let dy1 = 0;
 let rdx = [];
 let rdy = [];
-var crop_button;
+var sb, rb, cb, fb;
 var load_button;
 let rx = [];
 let ry = [];
@@ -37,56 +35,108 @@ let changed;
 let w1;
 let scale1;
 let scale = 0.9;
+let cw = 720;
+let dblclc;
+let scaleslider;
 
 function mouseWheel(event) {
   scale -= 0.004 * event.delta;
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  rx[0] = (windowWidth - 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  ry[0] = (windowHeight * 0.86 - 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  rx[1] = (windowWidth + 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  ry[1] = (windowHeight * 0.86 + 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  scaleslider = (ry[1] + ry[0]) / 2;
+}
+
 function setup() {
-  createCanvas(windowWidth, windowHeight * 0.9);
-  canv = createCanvas(windowWidth, windowHeight * 0.8);
+  createCanvas(windowWidth, windowHeight);
+  canv = createCanvas(max(width, cw), max(width, cw));
   canv.parent('logo');
+  canv.drop(handleFile);
   smooth(8);
   step = 0;
   lmax1 = -800;
   lmax = 0;
   done = 1;
   rectMode(CORNERS);
-  type = round(random(1));
-  load_button = createButton('LOAD');
-  load_button.mousePressed(handleFile);
-  load_button.class('inputImg btn');
-  load_button.parent('btnh');
-  crop_button = createButton('CROP');
-  crop_button.mousePressed();
-  crop_button.class("btn");
-  crop_button.parent('buttons');
-  crop_button.mousePressed(crop);
+
+  sb = createImg("/settings.png")
+    .position(windowWidth / 2 - 100 - 1.5 * windowWidth / 16, -50)
+    .parent('buttons')
+    .mousePressed()
+    .class("a");
+  rb = createImg("/restart.png")
+    .position(windowWidth / 2 - 50 - 0.5 * windowWidth / 16, -50)
+    .parent('buttons')
+    .mousePressed(restart)
+    .class("a");
+  cb = createImg("/crop.png")
+    .position(windowWidth / 2 + 0 + 0.5 * windowWidth / 16, -50)
+    .parent('buttons')
+    .mousePressed(crop)
+    .class("an");
+  fb = createImg("/forward.png")
+    .position(windowWidth / 2 + 50 + 1.5 * windowWidth / 16, -50)
+    .parent('buttons')
+    .mousePressed(save1)
+    .class("an");
+
+  load_button = createButton('Выбрать фото')
+    .mousePressed(handleFile)
+    .class('inputImg btn')
+    .parent('btnh');
 
   input = createFileInput(handleFile);
   input.class('inputImg');
   input.parent('btnh');
+
   frameRate(60);
+}
+
+function restart() {
+  background(255);
+  rx[0] = (windowWidth - 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  ry[0] = (windowHeight * 0.86 - 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  rx[1] = (windowWidth + 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  ry[1] = (windowHeight * 0.86 + 0.86 * min(windowWidth, windowHeight * 0.9)) / 2;
+  scaleslider = (ry[1] + ry[0]) / 2;
+  sb.position(windowWidth / 2 - 100 - 1.5 * windowWidth / 16, -50);
+  rb.position(windowWidth / 2 - 50 - 0.5 * windowWidth / 16, -50);
+  cb.position(windowWidth / 2 + 0 + 0.5 * windowWidth / 16, -50);
+  fb.position(windowWidth / 2 + 50 + 1.5 * windowWidth / 16, -50);
+  rx0 = rx[0];
+  ry0 = ry[0];
+  rx1 = rx[1];
+  ry1 = ry[1];
+  w1 = int(0.9 * min(width, height));
+  done = 1;
+  scale = 1;
+  loaded = 10;
+  resized = false;
+  croped = false;
+  fb.class("an");
+  cb.class("a");
 }
 
 function handleFile(file) {
   print(file);
   if (file.type === 'image') {
-    //background(240, 240, 240);
+    console.log(file.type);
     background(255);
-
     img = loadImage(file.data);
-    console.log("loaded image = ", img);
-    rx[0] = (canv.width - 0.9 * min(canv.width, canv.height)) / 2;
-    ry[0] = (canv.height - 0.9 * min(canv.width, canv.height)) / 2;
-    rx[1] = (canv.width + 0.9 * min(canv.width, canv.height)) / 2;
-    ry[1] = (canv.height + 0.9 * min(canv.width, canv.height)) / 2;
+    rx[0] = (windowWidth - 0.84 * min(windowWidth, windowHeight * 0.9)) / 2;
+    ry[0] = (windowHeight * 0.9 - 0.84 * min(windowWidth, windowHeight * 0.9)) / 2;
+    rx[1] = (windowWidth + 0.84 * min(windowWidth, windowHeight * 0.9)) / 2;
+    ry[1] = (windowHeight * 0.9 + 0.84 * min(windowWidth, windowHeight * 0.9)) / 2;
     rx0 = rx[0];
     ry0 = ry[0];
     rx1 = rx[1];
     ry1 = ry[1];
-    w1 = int(0.9 * min(canv.width, canv.height));
-    console.log(w1);
+    w1 = int(0.9 * min(width, height));
     scale = 1;
     loaded = 10;
     resized = false;
@@ -99,20 +149,32 @@ function handleFile(file) {
 
 
 function mouseDragged() {
-  if (mouseX < 5) mouseX = 5;
-  if (mouseY < 5) mouseY = 5;
-  for (let i = 0; i < 2; i++) {
-    for (let j = 2; j < 4; j++) {
-      if ((abs(mouseX - m[i]) < 40) && (abs(mouseY - m[j]) < 20)) {
-        rx[i] = mouseX;
-        ry[j - 2] = mouseY;
-        changed = 100;
+  if (mouseX > windowWidth - 15) {
+    let div;
+    if (mouseX - 5 < scaleslider < mouseX + 5) {
+
+    }
+  } else {
+    for (let i = 0; i < 2; i++) {
+      for (let j = 2; j < 4; j++) {
+        if ((abs(mouseX - m[i]) < 40) && (abs(mouseY - m[j]) < 20)) {
+          rx[i] = mouseX;
+          ry[j - 2] = mouseY;
+          changed = 100;
+        }
       }
     }
+    if (changed == 0) {
+      dx += mouseX - pmouseX;
+      dy += mouseY - pmouseY;
+    }
   }
-  if (changed == 0) {
-    dx += mouseX - pmouseX;
-    dy += mouseY - pmouseY;
+}
+
+
+function save1() {
+  if (done == 2) {
+    save(canv, "output.png");
   }
 }
 
@@ -127,10 +189,10 @@ function drawrect(x1, y1, x2, y2) {
   rx[1] = m[1];
   ry[0] = m[2];
   ry[1] = m[3];
-  rect(0, 0, m[0], windowHeight);
-  rect(m[0], 0, windowWidth, m[2]);
-  rect(m[1], m[2], windowWidth, m[3]);
-  rect(m[0], m[3], windowWidth, windowHeight);
+  rect(0, 0, m[0], height);
+  rect(m[0], 0, width, m[2]);
+  rect(m[1], m[2], width, m[3]);
+  rect(m[0], m[3], width, height);
   stroke(0);
   fill(0);
   strokeWeight(2);
@@ -182,12 +244,13 @@ function drawrect(x1, y1, x2, y2) {
 }
 
 function start(a) {
+  dx1 = 0;
+  dy1 = 0;
   step = 0;
   lmax1 = -800;
   lmax = 0;
   done = 1;
   loaded = -1;
-  type = 0;
   i = 0;
   createnails();
 }
@@ -195,98 +258,101 @@ function start(a) {
 
 function crop() {
   if (!croped) {
-    image(img, dx + dx1 + (canv.width - img.width * scale) / 2, dy + dy1 + (canv.height - img.height * scale) / 2,
+    image(img,
+      dx + dx1 + (windowWidth - img.width * scale) / 2, dy + dy1 + (windowHeight * 0.9 - img.height * scale) / 2,
       img.width * scale, img.height * scale);
     start();
     croped = true;
-    loadPixels();
-    const d = pixelDensity();
     s = 0.0;
     pix = [];
-    rx[0] = int(rx[0]);
-    rx[1] = int(rx[1]);
-    ry[0] = int(ry[0]);
-    ry[1] = int(ry[1]);
+    rx[0] = round(rx[0]);
+    rx[1] = round(rx[1]);
+    ry[0] = round(ry[0]);
+    ry[1] = round(ry[1]);
     w1 = rx1 - rx0;
-    for (let x = rx0; x < rx1; x++) {
-      for (let y = ry0; y < ry1; y++) {
-        pix[(y - ry0) * w1 + (x - rx0)] = 255 - red(get(x, y));
-        if (pix[(y - ry0) * w1 + (x - rx0)] < 1) {
-          pix[(y - ry0) * w1 + (x - rx0)] = 0;
+    scale1 = w1 / cw;
+    copy(round(rx0), round(ry0), round(w1), round(w1), 0, 0, cw, cw);
+    loadPixels();
+    for (let x = 0; x < cw; x++) {
+      for (let y = 0; y < cw; y++) {
+        pix[y * cw + x] = round(255 - (red(get(x, y)) + green(get(x, y)) + blue(get(x, y))) / 3);
+        if (pix[y * cw + x] < 1) {
+          pix[y * cw + x] = 0;
         }
-        s += 1.0 * pix[(y - ry0) * w1 + (x - rx0)] / (w1 * w1);
+        s += 1.0 * pix[y * cw + x] / (cw * cw);
       }
     }
+    updatePixels();
     SIMPVAL = int(s * 0.4);
     NEGVAL = int(3 * s * 0.4);
     eps = 2 * s;
-    updatePixels();
     background(240);
     stroke(0);
     fill(0);
     for (let i = 0; i < n; i++) {
-      ellipse(rx0 + a[i], ry0 + a[i + n], 2, 2);
+      ellipse(rx0 + scale1 * a[i], ry0 + scale1 * a[i + n], 2, 2);
     }
     np = 49;
+    cb.class("an");
+    fb.class("an");
   }
 }
 
 function createnails() {
-  w1 = rx1 - rx0;
-  if (type == 0) {
-    let k = 0;
-    for (let i = 0; i < (n / 4); i++) {
-      a[i] = round(i * (w1 - 1) * 4 / n);
-      a[i + n] = 0;
-      a[i + n / 4] = round(w1 - 1);
-      a[i + n / 4 + n] = round(i * (w1 - 1) * 4 / n);
-      a[i + n / 2] = round(w1 - i * (w1 - 1) * 4 / n - 1);
-      a[i + n / 2 + n] = round(w1 - 1);
-      a[i + 3 * n / 4] = 0;
-      a[i + 3 * n / 4 + n] = round(w1 - i * (w1 - 1) * 4 / n - 1);
-    }
-  }
-  if (type == 1) {
-    for (let i = 0; i < n; i++) {
-      a[i] = round(w1 / 2 + (sin(TWO_PI * i / n) * (w1 / 2 - 1)));
-      a[i + n] = round(w1 / 2 - (cos(TWO_PI * i / n) * (w1 / 2 - 1)));
-    }
+  // w1 = rx1 - rx0;
+  let w1 = cw;
+  let k = 0;
+  for (let i = 0; i < (n / 4); i++) {
+    a[i] = round(i * (w1 - 1) * 4 / n);
+    a[i + n] = 0;
+    a[i + n / 4] = round(w1 - 1);
+    a[i + n / 4 + n] = round(i * (w1 - 1) * 4 / n);
+    a[i + n / 2] = round(w1 - i * (w1 - 1) * 4 / n - 1);
+    a[i + n / 2 + n] = round(w1 - 1);
+    a[i + 3 * n / 4] = 0;
+    a[i + 3 * n / 4 + n] = round(w1 - i * (w1 - 1) * 4 / n - 1);
   }
 }
 
 function draw() {
-  if (done == 0) {
+  if ((!croped)) {
     background(240, 240, 240);
   }
   if (loaded > 0) {
     tint(255, 255, 255, max(0, 25 * (8 - loaded)));
     image(img, dx, dy);
-    img.resize(0, min(canv.width, canv.height));
-    dx = (canv.width - img.width) / 2;
-    dy = (canv.height - img.height) / 2;
+    img.resize(0, min(windowWidth, windowHeight));
+    dx = (windowWidth - img.width) / 2;
+    dy = (windowHeight * 0.9 - img.height) / 2;
     loaded--;
   } else if (loaded == 0) {
     noTint();
     start();
+    cb.class("a");
     dx = 0;
     dy = 0;
     changed = 0;
     resized = true;
   }
   if (!croped) {
+    fill(255);
     if (resized) {
-      image(img, dx + dx1 + (canv.width - img.width * scale) / 2, dy + dy1 + (canv.height - img.height * scale) / 2,
+      rect(1 + dx + dx1 + (windowWidth - img.width * scale) / 2, 1 + dy + dy1 + (windowHeight * 0.9 - img.height * scale) / 2,
+        -1 + dx + dx1 + (windowWidth + img.width * scale) / 2, -1 + dy + dy1 + (windowHeight * 0.9 + img.height * scale) / 2);
+      image(img, dx + dx1 + (windowWidth - img.width * scale) / 2, dy + dy1 + (windowHeight * 0.9 - img.height * scale) / 2,
         img.width * scale, img.height * scale);
     }
     drawrect(rx[0], ry[0], rx[1], ry[1]);
   } else {
-    strokeWeight(0.7);
+    strokeWeight(0.8 * scale1);
     fill(0, 128);
     stroke(0, 128);
     if (done != 2) {
       go(depth);
     }
   }
+  rect(windowWidth - 4, ry[0], windowWidth + 2, ry[1]);
+  ellipse(windowWidth - 3, scaleslider, 5, 5);
 }
 
 function go(k) {
@@ -314,11 +380,12 @@ function go(k) {
       if (lmax > lmax1) {
         lmax1 = lmax;
       }
-      if ((lmax < eps) && (!done)) {
+      if ((lmax < eps) && (done != 2)) {
         done = 2;
+        fb.class("a");
       }
     }
-    line(rx0 + a[i], ry0 + a[i + n], rx0 + a[j], ry0 + a[j + n]);
+    line(rx0 + scale1 * a[i], ry0 + scale1 * a[i + n], rx0 + scale1 * a[j], ry0 + scale1 * a[j + n]);
     step++;
     if (i != j) {
       i = (p(i, j, 1));
@@ -346,13 +413,13 @@ function p(x, y, m) {
         f = true;
       }
       if (m != 1) {
-        s += pix[x0 + y0 * w1];
+        s += pix[x0 + y0 * cw];
       }
       if (m == 1) {
-        if (pix[x0 + y0 * w1] > 1) {
-          pix[x0 + y0 * w1] -= SIMPVAL;
-        } else if (pix[x0 + y0 * w1] <= 1) {
-          pix[x0 + y0 * w1] = -NEGVAL;
+        if (pix[x0 + y0 * cw] > 1) {
+          pix[x0 + y0 * cw] -= SIMPVAL;
+        } else if (pix[x0 + y0 * cw] <= 1) {
+          pix[x0 + y0 * cw] = -NEGVAL;
         }
       }
       e2 = 2 * err;

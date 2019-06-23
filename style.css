@@ -99,17 +99,22 @@ p {
 }
 
 .btn {
+  border-style: none;
+  overflow: hidden;
+  outline: none;
+  background-color: Transparent;
+  background-repeat: no-repeat;
   min-width: 100%;
+  min-height: 100%;
   /* border: 2px solid gray; */
   /* color: gray; */
-  background-color: white;
   padding: 8px 20px;
   /* border-radius: 8px; */
   font-size: 20px;
   font-weight: bold;
 }
 
-.upload-btn-wrapper input[type=file] {
+.upload-btn-wrapper input[type="file"] {
   font-size: 100px;
   position: absolute;
   left: 0;
@@ -200,4 +205,18 @@ p {
   small {
     font-size: 80%;
   }
+}
+
+img.a:hover {
+  filter: alpha (Opacity=75);
+  /* прозрачность для IE */
+  opacity: 0.75;
+  /* прозрачность для других браузеров */
+}
+
+img.an {
+  filter: alpha (Opacity=25);
+  /* прозрачность для IE */
+  opacity: 0.25;
+  /* прозрачность для других браузеров */
 }
