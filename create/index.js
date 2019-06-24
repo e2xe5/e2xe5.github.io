@@ -21,7 +21,7 @@ let dx1 = 0;
 let dy1 = 0;
 let rdx = [];
 let rdy = [];
-var sb, rb, cb, fb;
+var sb, rb, cb, fb, ib, bb;
 var load_button;
 let rx = [];
 let ry = [];
@@ -64,26 +64,36 @@ function setup() {
   done = 1;
   rectMode(CORNERS);
 
-  sb = createImg("/settings.png")
+  sb = createImg("/settings.svg")
     .position(windowWidth / 2 - 100 - 1.5 * windowWidth / 16, -50)
     .parent('buttons')
     .mousePressed()
     .class("a");
-  rb = createImg("/restart.png")
+  rb = createImg("/restart.svg")
     .position(windowWidth / 2 - 50 - 0.5 * windowWidth / 16, -50)
     .parent('buttons')
     .mousePressed(restart)
     .class("a");
-  cb = createImg("/crop.png")
+  cb = createImg("/crop.svg")
     .position(windowWidth / 2 + 0 + 0.5 * windowWidth / 16, -50)
     .parent('buttons')
     .mousePressed(crop)
     .class("an");
-  fb = createImg("/forward.png")
+  fb = createImg("/forward.svg")
     .position(windowWidth / 2 + 50 + 1.5 * windowWidth / 16, -50)
     .parent('buttons')
     .mousePressed(save1)
     .class("an");
+  ib = createImg("/info.svg")
+    .position(windowWidth - 100 - 1.5 * windowWidth / 16, -windowHeight + 55)
+    .parent('buttons')
+    .mousePressed()
+    .class("a");
+  bb = createImg("/shop.svg")
+    .position(windowWidth - 50 - 0.5 * windowWidth / 16, -windowHeight + 55)
+    .parent('buttons')
+    .mousePressed()
+    .class("a");
 
   load_button = createButton('Выбрать фото')
     .mousePressed(handleFile)
@@ -108,6 +118,8 @@ function restart() {
   rb.position(windowWidth / 2 - 50 - 0.5 * windowWidth / 16, -50);
   cb.position(windowWidth / 2 + 0 + 0.5 * windowWidth / 16, -50);
   fb.position(windowWidth / 2 + 50 + 1.5 * windowWidth / 16, -50);
+  ib.position(windowWidth - 100 - 1.5 * windowWidth / 16, -windowHeight + 55);
+  bb.position(windowWidth - 50 - 0.5 * windowWidth / 16, -windowHeight + 55);
   rx0 = rx[0];
   ry0 = ry[0];
   rx1 = rx[1];
@@ -284,8 +296,8 @@ function crop() {
     }
     updatePixels();
     SIMPVAL = int(s * 0.4);
-    NEGVAL = int(3 * s * 0.4);
-    eps = 2 * s;
+    NEGVAL = int(3 * s * 0.2);
+    eps = 1.2 * s;
     background(240);
     stroke(0);
     fill(0);
@@ -351,8 +363,6 @@ function draw() {
       go(depth);
     }
   }
-  rect(windowWidth - 4, ry[0], windowWidth + 2, ry[1]);
-  ellipse(windowWidth - 3, scaleslider, 5, 5);
 }
 
 function go(k) {

@@ -111,7 +111,6 @@ p {
   padding: 8px 20px;
   /* border-radius: 8px; */
   font-size: 20px;
-  font-weight: bold;
 }
 
 .upload-btn-wrapper input[type="file"] {
@@ -171,7 +170,7 @@ p {
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   h2 {
-    font-size: 240%;
+    font-size: 280%;
   }
 
   h3 {
@@ -185,7 +184,7 @@ p {
 
 @media (min-width: 481px) and (max-width: 767px) {
   h2 {
-    font-size: 200%;
+    font-size: 240%;
     line-height: 0.0em;
   }
 
@@ -200,7 +199,7 @@ p {
 
 @media (min-width: 0px) and (max-width: 480px) {
   h2 {
-    font-size: 180%;
+    font-size: 240%;
   }
 
   h3 {
