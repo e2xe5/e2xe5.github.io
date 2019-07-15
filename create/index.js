@@ -35,7 +35,7 @@ let changed;
 let w1;
 let scale1;
 let scale = 0.9;
-let cw = 2000;
+let cw = 1024;
 let dblclc;
 let simh2, negh2, sizh2, roth2;
 let simsl, negsl, sizsl;
@@ -69,7 +69,7 @@ function setup() {
   done = 1;
   settings = 0;
   rotating = 0;
-  smoothed = true;
+  smoothed = false;
   simsl = 0.5;
   negsl = 0.5;
   sizsl = 0.5;
@@ -428,7 +428,7 @@ function crop() {
         loadPixels();
         for (let x = 0; x < cw; x++) {
           for (let y = 0; y < cw; y++) {
-            pix[y * cw + x] = round(255 - (red(get(x, y)) + green(get(x, y)) + blue(get(x, y))) / 3);
+            pix[y * cw + x] = 255 - (red(get(x, y)));
             if (pix[y * cw + x] < 1) {
               pix[y * cw + x] = 0;
             }
