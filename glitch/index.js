@@ -25,7 +25,7 @@ function mouseClicked() {
 }
 
 function draw() {
-  if (random(1) < 0.070) background(0);
+  if (random(1) < 0.60) background(0);
   if (action) {
     if (random(1) < 0.10) fill(0, 2, 242, 255);
     else if (random(1) < 0.10) fill(255, 84, 0, 255);
