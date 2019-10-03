@@ -438,7 +438,7 @@ function crop() {
         updatePixels();
         SIMPVAL = int(s * simsl);
         NEGVAL = int(3 * s * negsl);
-        eps = 0;
+        eps = 2 * s;
         background(240);
         stroke(0);
         fill(0);

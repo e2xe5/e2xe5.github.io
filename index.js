@@ -46,14 +46,14 @@ function setup() {
 function createnails() {
   let k = 0;
   for (let i = 0; i < (n / 4); i++) {
-    a[i] = round(i * (img.height - 1) * 4 / n-random(3));
-    a[i + n] = round(random(3));
-    a[i + n / 4] = round(img.height - 1-random(3));
-    a[i + n / 4 + n] = round(i * (img.height - 1) * 4 / n-random(3));
-    a[i + n / 2] = round(img.height - i * (img.height - 1) * 4 / n - 1-random(3));
-    a[i + n / 2 + n] = round(img.height - 1-random(3));
-    a[i + 3 * n / 4] = round(random(3));
-    a[i + 3 * n / 4 + n] = round(img.height - i * (img.height - 1) * 4 / n - 1-random(3));
+    a[i] = round(i * (img.height - 1) * 4 / n);
+    a[i + n] = 0;
+    a[i + n / 4] = round(img.height - 1);
+    a[i + n / 4 + n] = round(i * (img.height - 1) * 4 / n);
+    a[i + n / 2] = round(img.height - i * (img.height - 1) * 4 / n - 1);
+    a[i + n / 2 + n] = round(img.height - 1);
+    a[i + 3 * n / 4] = 0;
+    a[i + 3 * n / 4 + n] = round(img.height - i * (img.height - 1) * 4 / n - 1);
   }
 }
 
@@ -80,7 +80,7 @@ function draw() {
     }
     SIMPVAL = int(s * 0.4);
     NEGVAL = int(3 * s * 0.4);
-    eps = 0;
+    eps = 2 * s;
     done = false;
     updatePixels();
     background(240);
@@ -103,7 +103,7 @@ function go(k) {
     for (let j1 = 0;
       (j1 < ((2 * n) + 1)) && !f; j1++) {
       if (i != j1) {
-        let q = (j1 % 2 == 0) ? (n + 1 + np + (j1 / 2)) % n : (n + 1 + np - ((j1 + 1) / 2)) % n;
+        let q = (j1 % 2 === 0) ? (n + 1 + np + (j1 / 2)) % n : (n + 1 + np - ((j1 + 1) / 2)) % n;
         let c = p(i, q, 0);
         if (abs(c - lmax) < eps) {
           j = q;
